@@ -1,0 +1,13 @@
+-Se dispara generar informe
+-se encola el job en redis queue
+-el worker saca ese job del mismo redis queue y lo ejecuta
+-hace toda la query del informe y crea un archivo temporal en formato csv
+-una vez creado el archivo csv, se sube a un bucket de S3
+-una vez subido el archivo a S3, se actualiza el estado del informe a "completado" y se guarda la URL del archivo en S3 en la base de datos
+-notificar al servidor socket en node con la URL del informe para que pueda ser descargado por el usuario
+-el usuario recibe una notificación en la interfaz de usuario de que el informe está listo para ser descargado, con un enlace a la URL del archivo en S3
+-el usuario puede consultar la opcion consultar procesos, donde se muestra el estado de los informes generados, incluyendo el informe recién generado con su estado "completado" y la opción de descargarlo desde la URL proporcionada.
+
+
+Tareas pendientes:
+-Implementar autenticacion en el servidor socket

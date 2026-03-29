@@ -16,19 +16,14 @@ app.use(express.json());
 
 const pendientes = new Map();
 
-app.get('/', (req, res) => {
-    console.log('Servidor ESM para notificaciones de informes iniciado');
-    res.send('Servidor ESM para notificaciones de informes');
-});
-
 app.post('/notify-job-complete', (req, res) => {
-    const { usuario_id, mensaje, url } = req.body;
+    const { user_id, mensaje, url } = req.body;
 
-    if (!usuario_id || !url) {
+    if (!user_id || !url) {
         return res.status(400).json({ error: 'Faltan datos obligatorios' });
     }
 
-    const room = `user_${usuario_id}`;
+    const room = `user_${user_id}`;
     const sockets = io.sockets.adapter.rooms.get(room);
 
     const data = {
@@ -38,13 +33,13 @@ app.post('/notify-job-complete', (req, res) => {
 
     if (sockets && sockets.size > 0) {
         io.to(room).emit('informe-listo', data);
-        console.log(`Enviado en tiempo real a ${usuario_id}`);
+        console.log(`Enviado en tiempo real a ${user_id}`);
     } else {
-        if (!pendientes.has(usuario_id)) {
-            pendientes.set(usuario_id, []);
+        if (!pendientes.has(user_id)) {
+            pendientes.set(user_id, []);
         }
-        pendientes.get(usuario_id).push(data);
-        console.log(`Guardado pendiente para ${usuario_id}`);
+        pendientes.get(user_id).push(data);
+        console.log(`Guardado pendiente para ${user_id}`);
     }
 
     return res.status(200).json({ success: true });
