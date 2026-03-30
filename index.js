@@ -17,7 +17,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
         //origin: CORS_ORIGIN ? CORS_ORIGIN.split(',') : [],
-        origin: ['*'],
+        origin: '*',
         methods: ['GET', 'POST'],
     },
 });
