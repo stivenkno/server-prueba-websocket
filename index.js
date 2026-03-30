@@ -16,7 +16,8 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
     cors: {
-        origin: CORS_ORIGIN ? CORS_ORIGIN.split(',') : [],
+        //origin: CORS_ORIGIN ? CORS_ORIGIN.split(',') : [],
+        origin: ['*'],
         methods: ['GET', 'POST'],
     },
 });
@@ -53,7 +54,7 @@ app.post('/notify-job-complete', verificarApiKey, (req, res) => {
         url,
     };
 
-    const room         = `user_${user_id}`;
+    const room = `user_${user_id}`;
     const hayConectado = io.sockets.adapter.rooms.get(room)?.size > 0;
 
     if (hayConectado) {
